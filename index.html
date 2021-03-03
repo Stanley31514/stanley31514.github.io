@@ -40,7 +40,7 @@ function f1(){
 
 
 
-<video id="player" controls autoplay webkit-playsinline playsinline style="height:100px;width:100px;"></video>
+<video id="player" controls autoplay webkit-playsinline playsinline style="height:50px;width:50px;"></video>
 <button id="capture">Capture</button>
 <canvas id="canvas" width=50 height=50></canvas>
 <h1 id="light">test</h1>
@@ -66,30 +66,50 @@ function f1(){
     }
   }
   };  
-
   
-    window.setInterval(
-      function(event){
-        context.drawImage(player , 0, 0, canvas.width, canvas.height);
-        let data = context.getImageData(0, 0, 50, 50);
-        let i = 0;
-        let sum = 0;
-        while (i < data.data.length){
-          let r = data.data[i++];
-          let g = data.data[i++];
-          let b = data.data[i++];
-          let a = data.data[i++];
-          sum += r+g+b;
-        }
-        document.getElementById("light").innerText = sum;
-      } ,
-      100
-    );
-    navigator.mediaDevices.getUserMedia(constraints)
-    .then((stream) => {
-      // Attach the video stream to the video element and autoplay.
-      player.srcObject = stream;
-    });
+  let onTime = 0;
+  let offTime = 0;
+  let timer = 0;
+  let high = 0;
+  let low = 0;
+  let prev = 0;
+
+  function capture(event){
+    timer += 10;
+    context.drawImage(player , 0, 0, canvas.width, canvas.height);
+    let data = context.getImageData(0, 0, 50, 50);
+    let i = 0;
+    let sum = 0;
+    while (i < data.data.length){
+      let r = data.data[i++];
+      let g = data.data[i++];
+      let b = data.data[i++];
+      let a = data.data[i++];
+      sum += (r/255+g/255+b/255)*(a/255);
+    }
+    if (sum > 2 * prev){
+      high++;
+      offTime = timer;
+
+      timer = 0;
+    }
+    else if (sum < 0.5 * prev){
+      low++;
+      onTime = timer;
+
+      timer = 0;
+
+    }
+    document.getElementById("light").innerText = `ON: ${onTime} MSEC OFF: ${offTime} CODE: ${(60000/(onTime+offTime)).toFixed(0)} CURRENT: ${sum.toFixed(0)} PREVIOUS: ${prev.toFixed(0)} HIGH: ${high} LOW: ${low}`;
+    prev = sum;
+  }
+
+  navigator.mediaDevices.getUserMedia(constraints)
+  .then((stream) => {
+    // Attach the video stream to the video element and autoplay.
+    player.srcObject = stream;
+    setInterval(capture , 10);
+  });
 
 </script>
 
