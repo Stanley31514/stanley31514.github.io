@@ -96,8 +96,9 @@ function f1(){
       prevTime = curTime;
 
     }
-    else if (state == "high" && sum < 0.5 * prev){
+    else if (state == "high" && sum < 0.7 * prev){
       low++;
+      let curTime = new Date();
       onTime = curTime - prevTime;
       state = "low";
       prevTime = curTime;
@@ -111,7 +112,7 @@ function f1(){
   .then((stream) => {
     // Attach the video stream to the video element and autoplay.
     player.srcObject = stream;
-    setInterval(capture , 1);
+    setInterval(capture , 10);
   });
 
 </script>
