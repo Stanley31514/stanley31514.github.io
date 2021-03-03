@@ -76,7 +76,7 @@ function f1(){
   let prevSaveTime = prevTime;
   let codeRates = [];
   let codeRate = 0;
-  let oldCodeRate = 0;
+
 
   function capture(event){
  
@@ -116,7 +116,7 @@ function f1(){
         sumRate += rate;
       }
       let newCodeRate = sumRate / codeRates.length;
-      codeRate = (newCodeRate + oldCodeRate)/2; 
+      codeRate = (newCodeRate + codeRate)/2; 
       codeRates = [];
       
       /* let sumTime = 0;
