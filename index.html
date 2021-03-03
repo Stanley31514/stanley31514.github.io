@@ -75,7 +75,7 @@ function f1(){
   let prev = 0;
 
   function capture(event){
-    timer += 10;
+    timer += 1;
     context.drawImage(player , 0, 0, canvas.width, canvas.height);
     let data = context.getImageData(0, 0, 50, 50);
     let i = 0;
@@ -108,7 +108,7 @@ function f1(){
   .then((stream) => {
     // Attach the video stream to the video element and autoplay.
     player.srcObject = stream;
-    setInterval(capture , 10);
+    setInterval(capture , 1);
   });
 
 </script>
