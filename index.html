@@ -74,6 +74,7 @@ function f1(){
   let prev = 0;
   let state = "low";
   let prevTime = new Date();
+  let codeRates = 0;
 
   function capture(event){
  
@@ -94,6 +95,8 @@ function f1(){
       offTime = curTime - prevTime;
       state = "high";
       prevTime = curTime;
+      let newRate = 60000/(onTime+offTime);
+      codeRate = (codeRate + newRate)/2;
 
     }
     else if (state == "high" && sum < 0.7 * prev){
@@ -102,9 +105,11 @@ function f1(){
       onTime = curTime - prevTime;
       state = "low";
       prevTime = curTime;
+      let newRate = 60000/(onTime+offTime);
+      codeRate = (codeRate + newRate)/2;
 
     }
-    document.getElementById("light").innerText = `ON: ${onTime} MSEC OFF: ${offTime} CODE: ${(60000/(onTime+offTime)).toFixed(0)} CURRENT: ${sum.toFixed(0)} STATE: ${state}`;
+    document.getElementById("light").innerText = `ON: ${onTime} MSEC OFF: ${offTime} CODE: ${(codeRate).toFixed(0)} CURRENT: ${sum.toFixed(0)} STATE: ${state}`;
     prev = sum;
   }
 
