@@ -8,7 +8,7 @@
 
 </head>
 
-<body style="color: white; background: rgb(35, 35, 35);">
+<body style="color: white; background: rgb(25, 25, 25);">
 <!-- <canvas id="myCanvas" width="200" height="200" style="border:1px solid #000000;">
 </canvas> 
 
@@ -108,7 +108,7 @@ function f1(){
       let newRate = 60000/(onTime+offTime);
       codeRates.push(newRate);
     }
-    if ((curTime - prevSaveTime) > 1500){
+    if ((curTime - prevSaveTime) > 1000){
       prevSaveTime = curTime;
       let sumRate = 0;
       for (let rate of codeRates){
@@ -116,6 +116,7 @@ function f1(){
       }
       codeRate = sumRate / codeRates.length;
       codeRates = [];
+      console.log(sumRate , codeRate , codeRates.length)
       
       /* let sumTime = 0;
       for (let rate of codeRates){
