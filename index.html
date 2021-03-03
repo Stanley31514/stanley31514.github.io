@@ -97,18 +97,25 @@ function f1(){
       offTime = curTime - prevTime;
       state = "high";
       prevTime = curTime;
-      let newRate = 60000/(onTime+offTime);
-      codeRates.push(newRate);
+      /* let newRate = 60000/(onTime+offTime);
+      codeRates.push(newRate); */
     }
     else if (state == "high" && sum < 0.7 * prev){
       low++;
       onTime = curTime - prevTime;
       state = "low";
       prevTime = curTime;
-      let newRate = 60000/(onTime+offTime);
-      codeRates.push(newRate);
+      /* let newRate = 60000/(onTime+offTime);
+      codeRates.push(newRate); */
     }
-    if ((curTime - prevSaveTime) > 2000){
+
+    let newRate = 60000/(onTime+offTime);
+    codeRates.push(newRate);
+    if (codeRates.length > 3000){
+      codeRates.shift(1);
+    }
+
+    if ((curTime - prevSaveTime) > 500){
       prevSaveTime = curTime;
       let sumRate = 0;
       for (let rate of codeRates){
