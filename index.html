@@ -88,7 +88,7 @@ function f1(){
       let a = data.data[i++];
       sum += (r/255+g/255+b/255)*(a/255);
     }
-    if (state== "low" && sum > 1.5 * prev){
+    if (state == "low" && sum > 1.5 * prev){
       high++;
       let curTime = new Date();
       offTime = curTime - prevTime;
@@ -99,11 +99,11 @@ function f1(){
     else if (state == "high" && sum < 0.5 * prev){
       low++;
       onTime = curTime - prevTime;
-      state = "low"
+      state = "low";
       prevTime = curTime;
 
     }
-    document.getElementById("light").innerText = `ON: ${onTime} MSEC OFF: ${offTime} CODE: ${(60000/(onTime+offTime)).toFixed(0)} CURRENT: ${sum.toFixed(0)} PREVIOUS: ${prev.toFixed(0)} HIGH: ${high} LOW: ${low}`;
+    document.getElementById("light").innerText = `ON: ${onTime} MSEC OFF: ${offTime} CODE: ${(60000/(onTime+offTime)).toFixed(0)} CURRENT: ${sum.toFixed(0)} STATE: ${state} HIGH: ${high} LOW: ${low}`;
     prev = sum;
   }
 
