@@ -40,9 +40,9 @@ function f1(){
 
 
 
-<video id="player" controls autoplay></video>
+<video id="player" controls autoplay style="height:1px;"></video>
 <button id="capture">Capture</button>
-<canvas id="canvas" width=320 height=240></canvas>
+<canvas id="canvas" width=100 height=100></canvas>
 <script>
   const player = document.getElementById('player');
   const canvas = document.getElementById('canvas');
@@ -54,12 +54,12 @@ function f1(){
     width: {
       min: 100,
       ideal: 100,
-      max: 200,
+      max: 100,
     },
     height: {
       min: 100,
       ideal: 100,
-      max: 200
+      max: 100
     },
     facingMode: {
       exact: 'environment'
@@ -68,24 +68,23 @@ function f1(){
   };
 
   captureButton.addEventListener('click', () => {
-    context.drawImage(player, 0, 0, canvas.width, canvas.height);
+    context.drawImage(player , 0, 0, canvas.width, canvas.height);
 
     // Stop all video streams.
-    player.srcObject.getVideoTracks().forEach(track => track.stop());
+    //player.srcObject.getVideoTracks().forEach(track => track.stop());
   });
+
+  window.setInterval(function(event){context.drawImage(player , 0, 0, canvas.width, canvas.height);} , 20);
 
   navigator.mediaDevices.getUserMedia(constraints)
     .then((stream) => {
       // Attach the video stream to the video element and autoplay.
       player.srcObject = stream;
     });
+
 </script>
 
 </body>
 
 
 </html>
-
-
-
-
