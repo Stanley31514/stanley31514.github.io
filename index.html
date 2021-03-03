@@ -8,7 +8,7 @@
 
 </head>
 
-<body>
+<body style="color: black;">
 <!-- <canvas id="myCanvas" width="200" height="200" style="border:1px solid #000000;">
 </canvas> 
 
@@ -40,7 +40,7 @@ function f1(){
 
 
 
-<video id="player" controls autoplay webkit-playsinline playsinline style="height:200px;width:200px;"></video>
+<video id="player" controls autoplay webkit-playsinline playsinline style="height:200px;width:200px;border: 4px solid gray;"></video>
 <canvas id="canvas" width=10 height=10 style="display: none;"></canvas>
 <pre id="light" style="font-size: 40px;">test</pre>
 <script>
@@ -98,11 +98,7 @@ function f1(){
       state = "high";
       prevTime = curTime;
       let newRate = 60000/(onTime+offTime);
-      let weight = Math.max(1,Math.min(20,400/newRate));
-      for (let i = 0 ; i < weight ; i++){
-        codeRates.push(newRate);
-      }
-      
+      codeRates.push(newRate);
     }
     else if (state == "high" && sum < 0.7 * prev){
       low++;
@@ -111,11 +107,6 @@ function f1(){
       prevTime = curTime;
       let newRate = 60000/(onTime+offTime);
       codeRates.push(newRate);
-
-
-    }
-    if (codeRates.length > 1000){
-      codeRates.splice(0,codeRates.length-1000);
     }
     if ((curTime - prevSaveTime) > 2000){
       prevSaveTime = curTime;
