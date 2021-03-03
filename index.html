@@ -8,7 +8,7 @@
 
 </head>
 
-<body style="color: white; background: rgb(25, 25, 25);">
+<body style="color: white; background: rgb(35, 35, 35);">
 <!-- <canvas id="myCanvas" width="200" height="200" style="border:1px solid #000000;">
 </canvas> 
 
@@ -41,7 +41,7 @@ function f1(){
 
 
 <video id="player" controls autoplay webkit-playsinline playsinline style="height:300px;width:300px;border: 4px solid gray;"></video>
-<canvas id="canvas" width=20 height=20 style="display: none;"></canvas>
+<canvas id="canvas" width=10 height=10 style="display: none;"></canvas>
 <pre id="light" style="font-size: 40px;">test</pre>
 <script>
   const player = document.getElementById('player');
@@ -51,14 +51,14 @@ function f1(){
   const constraints = {
     video: {
     width: {
-      min: 300,
-      ideal: 300,
-      max: 300,
+      min: 100,
+      ideal: 100,
+      max: 100,
     },
     height: {
-      min: 300,
-      ideal: 300,
-      max: 300
+      min: 100,
+      ideal: 100,
+      max: 100
     },
     facingMode: {
       exact: 'environment'
@@ -108,7 +108,7 @@ function f1(){
       let newRate = 60000/(onTime+offTime);
       codeRates.push(newRate);
     }
-    if ((curTime - prevSaveTime) > 1000){
+    if ((curTime - prevSaveTime) > 2000){
       prevSaveTime = curTime;
       let sumRate = 0;
       for (let rate of codeRates){
