@@ -115,15 +115,15 @@ function f1(){
       codeRates.shift(1);
     }
 
-    if ((curTime - prevSaveTime) > 1000){
+    if ((curTime - prevSaveTime) > 500){
       prevSaveTime = curTime;
       let sumRate = 0;
       for (let rate of codeRates){
         sumRate += rate;
       }
       codeRate = sumRate / codeRates.length;
-      codeRates = [];
-      console.log(sumRate , codeRate , codeRates.length)
+      //codeRates = [];
+      //console.log(sumRate , codeRate , codeRates.length)
       
       /* let sumTime = 0;
       for (let rate of codeRates){
