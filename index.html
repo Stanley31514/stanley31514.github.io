@@ -91,10 +91,10 @@ function f1(){
     if (state== "low" && sum > 1.5 * prev){
       high++;
       offTime = timer;
-      state = high;
+      state = "high";
       timer = 0;
     }
-    else if (state == "low" && sum < 0.5 * prev){
+    else if (state == "high" && sum < 0.5 * prev){
       low++;
       onTime = timer;
       state = "low"
