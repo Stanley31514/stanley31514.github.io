@@ -110,16 +110,14 @@ function f1(){
       state = "low";
       prevTime = curTime;
       let newRate = 60000/(onTime+offTime);
-      let weight = Math.max(1,Math.min(20,400/newRate));
-      for (let i = 0 ; i < weight ; i++){
-        codeRates.push(newRate);
-      }
+      codeRates.push(newRate);
+
 
     }
     if (codeRates.length > 1000){
       codeRates.splice(0,codeRates.length-1000);
     }
-    if ((curTime - prevSaveTime) > 500){
+    if ((curTime - prevSaveTime) > 2000){
       prevSaveTime = curTime;
       let sumRate = 0;
       for (let rate of codeRates){
