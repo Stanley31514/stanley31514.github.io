@@ -65,44 +65,15 @@ function f1(){
       exact: 'environment'
     }
   }
-  };
-
-  var mediaStreamTrack;
-  var imageCapture;
-
-  navigator.mediaDevices.getUserMedia({video: true})
-  .then(gotMedia)
-  .catch(error => console.error('getUserMedia() error:', error));
-
-function draw(){
-    imageCapture.grabFrame()
-    .then(imageBitmap => {
-      canvas.width = imageBitmap.width;
-      canvas.height = imageBitmap.height;
-      canvas.getContext('2d').drawImage(imageBitmap, 0, 0);
-      window.setTimeout(draw , 20);
-    })
-    .catch(error => console.error('grabFrame() error:', error));
-  }
-
-
-
-function gotMedia(mediaStream) {
-  mediaStreamTrack = mediaStream.getVideoTracks()[0];
-  imageCapture = new ImageCapture(mediaStreamTrack);
-  console.log(imageCapture);
-  draw();
-}
+  };  
 
   
-
-/*   
     window.setInterval(function(event){context.drawImage(player , 0, 0, canvas.width, canvas.height);} , 20);
     navigator.mediaDevices.getUserMedia(constraints)
     .then((stream) => {
       // Attach the video stream to the video element and autoplay.
       player.srcObject = stream;
-    }); */
+    });
 
 </script>
 
