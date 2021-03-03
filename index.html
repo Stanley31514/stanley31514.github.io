@@ -111,11 +111,11 @@ function f1(){
 
     let newRate = 60000/(onTime+offTime);
     codeRates.push(newRate);
-    if (codeRates.length > 3000){
+    if (codeRates.length > 2000){
       codeRates.shift(1);
     }
 
-    if ((curTime - prevSaveTime) > 500){
+    if ((curTime - prevSaveTime) > 1000){
       prevSaveTime = curTime;
       let sumRate = 0;
       for (let rate of codeRates){
