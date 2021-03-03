@@ -42,7 +42,7 @@ function f1(){
 
 <video id="player" controls autoplay webkit-playsinline playsinline style="height:100px;width:100px;"></video>
 <button id="capture">Capture</button>
-<canvas id="canvas" width=100 height=100></canvas>
+<canvas id="canvas" width=50 height=50></canvas>
 <h1 id="light">test</h1>
 <script>
   const player = document.getElementById('player');
@@ -52,14 +52,14 @@ function f1(){
   const constraints = {
     video: {
     width: {
-      min: 100,
-      ideal: 100,
-      max: 100,
+      min: 50,
+      ideal: 50,
+      max: 50,
     },
     height: {
-      min: 100,
-      ideal: 100,
-      max: 100
+      min: 50,
+      ideal: 50,
+      max: 50
     },
     facingMode: {
       exact: 'environment'
@@ -68,7 +68,23 @@ function f1(){
   };  
 
   
-    window.setInterval(function(event){context.drawImage(player , 0, 0, canvas.width, canvas.height);} , 20);
+    window.setInterval(
+      function(event){
+        context.drawImage(player , 0, 0, canvas.width, canvas.height);
+        let data = context.getImageData(0, 0, 50, 50);
+        let i = 0;
+        let sum = 0;
+        while (i < data.data.length){
+          let r = data.data[i++];
+          let g = data.data[i++];
+          let b = data.data[i++];
+          let a = data.data[i++];
+          sum += r+g+b;
+        }
+        document.getElementById("light").innerText = sum;
+      } ,
+      100
+    );
     navigator.mediaDevices.getUserMedia(constraints)
     .then((stream) => {
       // Attach the video stream to the video element and autoplay.
