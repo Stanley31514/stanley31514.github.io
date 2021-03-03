@@ -40,10 +40,9 @@ function f1(){
 
 
 
-<video id="player" controls autoplay webkit-playsinline playsinline style="height:50px;width:50px;"></video>
-<button id="capture">Capture</button>
-<canvas id="canvas" width=50 height=50></canvas>
-<h1 id="light">test</h1>
+<video id="player" controls autoplay webkit-playsinline playsinline style="height:200px;width:200px;"></video>
+<canvas id="canvas" width=10 height=10 style="display: none;"></canvas>
+<pre id="light" style="font-size: 40px;">test</pre>
 <script>
   const player = document.getElementById('player');
   const canvas = document.getElementById('canvas');
@@ -81,7 +80,7 @@ function f1(){
   function capture(event){
  
     context.drawImage(player , 0, 0, canvas.width, canvas.height);
-    let data = context.getImageData(0, 0, 50, 50);
+    let data = context.getImageData(0, 0, canvas.width, canvas.height);
     let i = 0;
     let sum = 0;
     let curTime = new Date();
@@ -99,7 +98,11 @@ function f1(){
       state = "high";
       prevTime = curTime;
       let newRate = 60000/(onTime+offTime);
-      codeRates.push(newRate);
+      let weight = Math.max(1,Math.min(20,400/newRate));
+      for (let i = 0 ; i < weight ; i++){
+        codeRates.push(newRate);
+      }
+      
     }
     else if (state == "high" && sum < 0.7 * prev){
       low++;
@@ -107,10 +110,16 @@ function f1(){
       state = "low";
       prevTime = curTime;
       let newRate = 60000/(onTime+offTime);
-      codeRates.push(newRate);
+      let weight = Math.max(1,Math.min(20,400/newRate));
+      for (let i = 0 ; i < weight ; i++){
+        codeRates.push(newRate);
+      }
 
     }
-    if ((curTime - prevSaveTime) > 2000){
+    if (codeRates.length > 1000){
+      codeRates.splice(0,codeRates.length-1000);
+    }
+    if ((curTime - prevSaveTime) > 500){
       prevSaveTime = curTime;
       let sumRate = 0;
       for (let rate of codeRates){
@@ -118,10 +127,17 @@ function f1(){
       }
       codeRate = sumRate / codeRates.length;
       codeRates = [];
+      
+      /* let sumTime = 0;
+      for (let rate of codeRates){
+        sumTime += 60000/rate;
+      }
+      codeRate = (codeRates.length / 2) / (sumTime/60000); */
+
       high = 0;
       low = 0;
     }
-    document.getElementById("light").innerText = `ON: ${onTime} MSEC OFF: ${offTime} CODE: ${(codeRate).toFixed(0)} CURRENT: ${sum.toFixed(0)} STATE: ${state}`;
+    document.getElementById("light").innerText = `STATE: ${state} \nCODE: ${(codeRate).toFixed(0)} \nON: ${onTime} MSEC \nOFF: ${offTime} MSEC \n`;
     prev = sum;
   }
 
