@@ -8,7 +8,7 @@
 
 </head>
 
-<body style="color: black;">
+<body style="color: white; background: rgb(35, 35, 35);">
 <!-- <canvas id="myCanvas" width="200" height="200" style="border:1px solid #000000;">
 </canvas> 
 
@@ -40,8 +40,8 @@ function f1(){
 
 
 
-<video id="player" controls autoplay webkit-playsinline playsinline style="height:200px;width:200px;border: 4px solid gray;"></video>
-<canvas id="canvas" width=10 height=10 style="display: none;"></canvas>
+<video id="player" controls autoplay webkit-playsinline playsinline style="height:300px;width:300px;border: 4px solid gray;"></video>
+<canvas id="canvas" width=20 height=20 style="display: none;"></canvas>
 <pre id="light" style="font-size: 40px;">test</pre>
 <script>
   const player = document.getElementById('player');
@@ -51,14 +51,14 @@ function f1(){
   const constraints = {
     video: {
     width: {
-      min: 50,
-      ideal: 50,
-      max: 50,
+      min: 300,
+      ideal: 300,
+      max: 300,
     },
     height: {
-      min: 50,
-      ideal: 50,
-      max: 50
+      min: 300,
+      ideal: 300,
+      max: 300
     },
     facingMode: {
       exact: 'environment'
@@ -76,6 +76,7 @@ function f1(){
   let prevSaveTime = prevTime;
   let codeRates = [];
   let codeRate = 0;
+  let oldCodeRate = 0;
 
   function capture(event){
  
@@ -108,13 +109,14 @@ function f1(){
       let newRate = 60000/(onTime+offTime);
       codeRates.push(newRate);
     }
-    if ((curTime - prevSaveTime) > 2000){
+    if ((curTime - prevSaveTime) > 1000){
       prevSaveTime = curTime;
       let sumRate = 0;
       for (let rate of codeRates){
         sumRate += rate;
       }
-      codeRate = sumRate / codeRates.length;
+      let newCodeRate = sumRate / codeRates.length;
+      codeRate = (newCodeRate + oldCodeRate)/2; 
       codeRates = [];
       
       /* let sumTime = 0;
@@ -126,7 +128,7 @@ function f1(){
       high = 0;
       low = 0;
     }
-    document.getElementById("light").innerText = `STATE: ${state} \nCODE: ${(codeRate).toFixed(0)} \nON: ${onTime} MSEC \nOFF: ${offTime} MSEC \n`;
+    document.getElementById("light").innerText = `STATE: ${state.toUpperCase()} \nCODE: ${(codeRate).toFixed(0)} \nON: ${onTime} MSEC \nOFF: ${offTime} MSEC \n`;
     prev = sum;
   }
 
