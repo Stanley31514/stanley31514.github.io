@@ -69,14 +69,14 @@ function f1(){
   
   let onTime = 0;
   let offTime = 0;
-  let timer = 0;
   let high = 0;
   let low = 0;
   let prev = 0;
   let state = "low";
+  let prevTime = new Date();
 
   function capture(event){
-    timer += 1;
+ 
     context.drawImage(player , 0, 0, canvas.width, canvas.height);
     let data = context.getImageData(0, 0, 50, 50);
     let i = 0;
@@ -90,15 +90,17 @@ function f1(){
     }
     if (state== "low" && sum > 1.5 * prev){
       high++;
-      offTime = timer;
+      let curTime = new Date();
+      offTime = curTime - prevTime;
       state = "high";
-      timer = 0;
+      prevTime = curTime;
+
     }
     else if (state == "high" && sum < 0.5 * prev){
       low++;
-      onTime = timer;
+      onTime = curTime - prevTime;
       state = "low"
-      timer = 0;
+      prevTime = curTime;
 
     }
     document.getElementById("light").innerText = `ON: ${onTime} MSEC OFF: ${offTime} CODE: ${(60000/(onTime+offTime)).toFixed(0)} CURRENT: ${sum.toFixed(0)} PREVIOUS: ${prev.toFixed(0)} HIGH: ${high} LOW: ${low}`;
