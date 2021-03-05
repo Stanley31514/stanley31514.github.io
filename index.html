@@ -61,7 +61,7 @@ function f1(){
       max: 100
     },
     frameRate: {
-      min: 60,
+      min: 30,
       ideal: 120,
       max: 240
     },
@@ -89,16 +89,26 @@ function f1(){
   function capture(event){
  
     context.drawImage(player , 0, 0, canvas.width, canvas.height);
+    let curTime = new Date();
     let data = context.getImageData(0, 0, canvas.width, canvas.height);
     let i = 0;
     let sum = 0;
-    let curTime = new Date();
     while (i < data.data.length){
       let r = data.data[i++];
       let g = data.data[i++];
       let b = data.data[i++];
       let a = data.data[i++];
-      sum += (r/255+g/255+b/255)*(a/255);
+      sum += (r/255*.21+g/255*.72+b/255*.07)*(a/255);
+    }
+    let avg = sum/i;
+    i = 0;
+    sum = 0;
+    while (i < data.data.length){
+      let r = data.data[i++];
+      let g = data.data[i++];
+      let b = data.data[i++];
+      let a = data.data[i++];
+      sum += ((r/255*.21+g/255*.72+b/255*.07)*(a/255) > avg * 1.3) ? 1 : 0;
     }
     if (state == "low" && sum > 1.3 * prev){
       high++;
@@ -152,7 +162,7 @@ function f1(){
       high = 0;
       low = 0;
     }
-    document.getElementById("light").innerText = `STATE: ${state.toUpperCase()} \nCODE: ${(codeRate).toFixed(0)} \nCODE2-5SEC: ${(codeRate2_5).toFixed(0)} \nCODE2-10SEC: ${(codeRate2_10).toFixed(0)} \nCODE_AVG: ${((codeRate+codeRate2_5+codeRate2_10)/3).toFixed(0)} \nON: ${onTime} MSEC \nOFF: ${offTime} MSEC \n`;
+    document.getElementById("light").innerHTML = `STATE: ${state.toUpperCase()} \nCODE: ${(codeRate).toFixed(0)} \nCODE2-5SEC: ${(codeRate2_5).toFixed(0)} \nCODE2-10SEC: ${(codeRate2_10).toFixed(0)} \nCODE_AVG: ${((codeRate+codeRate2_5+codeRate2_10)/3).toFixed(0)} \nON: ${onTime} MSEC \nOFF: ${offTime} MSEC \n`;
     prev = sum;
   }
 
