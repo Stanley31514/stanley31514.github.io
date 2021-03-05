@@ -141,9 +141,14 @@ function f1(){
         tmpSumLowCount += toggleCount[toggleCount.length-i].lowCount;
         tmpSumPeriod += toggleCount[toggleCount.length-i].period;
         if (i == 1){
-          codeRate2_2 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod); 
-          if (tmpSumHighCount+tmpSumLowCount < 4){
+          if (((tmpSumHighCount+tmpSumLowCount) / 2) >= 4){
+            codeRate2_2 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod);
+          }   
+          else if ( (tmpSumHighCount+tmpSumLowCount) != 0){
             codeRate2_2 = 60000/(onTime+offTime);
+          }
+          else {
+            codeRate2_2 = 0;
           }
         }
         else if (i == 2){
@@ -165,8 +170,8 @@ function f1(){
     update += `CODE2-5SEC: <span style="color:lime;">${(codeRate2_5).toFixed(0)}</span> \n`;
     update += `CODE2-7SEC: <span style="color:lime;">${(codeRate2_7).toFixed(0)}</span> \n`; */
     update += `CODE: <span style="color:lime;">${((codeRate2_2)/1).toFixed(0)}</span> \n`;
-    update += `ON: ${onTime} MSEC \n`;
-    update += `OFF: ${offTime} MSEC \n`;
+    update += `ON: ${onTime.toFixed(1)} MSEC \n`;
+    update += `OFF: ${offTime.toFixed(1)} MSEC \n`;
     document.getElementById("light").innerHTML = update;
     prev = sum;
   }
