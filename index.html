@@ -100,7 +100,7 @@ function f1(){
       let a = data.data[i++];
       sum += (r/255*.21+g/255*.72+b/255*.07)*(a/255);
     }
-    let avg = sum/i;
+    /* let avg = sum/i;
     i = 0;
     sum = 0;
     while (i < data.data.length){
@@ -109,7 +109,7 @@ function f1(){
       let b = data.data[i++];
       let a = data.data[i++];
       sum += ((r/255*.21+g/255*.72+b/255*.07)*(a/255) > avg * 1.3) ? 1 : 0;
-    }
+    } */
     if (state == "low" && sum > 1.3 * prev){
       high++;
       offTime = curTime - prevTime;
@@ -162,7 +162,7 @@ function f1(){
       high = 0;
       low = 0;
     }
-    document.getElementById("light").innerHTML = `STATE: ${state.toUpperCase()} \nCODE: ${(codeRate).toFixed(0)} \nCODE2-5SEC: ${(codeRate2_5).toFixed(0)} \nCODE2-10SEC: ${(codeRate2_10).toFixed(0)} \nCODE_AVG: ${((codeRate+codeRate2_5+codeRate2_10)/3).toFixed(0)} \nON: ${onTime} MSEC \nOFF: ${offTime} MSEC \n`;
+    document.getElementById("light").innerHTML = `STATE: ${state.toUpperCase()} \nCODE: <span style="color:lime;">${(codeRate).toFixed(0)}</span> \nCODE2-5SEC: <span style="color:lime;">${(codeRate2_5).toFixed(0)}</span> \nCODE2-10SEC: <span style="color:lime;">${(codeRate2_10).toFixed(0)}</span> \nCODE_AVG: <span style="color:lime;">${((codeRate+codeRate2_5+codeRate2_10)/3).toFixed(0)}</span> \nON: ${onTime} MSEC \nOFF: ${offTime} MSEC \n`;
     prev = sum;
   }
 
