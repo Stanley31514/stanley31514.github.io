@@ -83,8 +83,8 @@ function f1(){
   let codeRate = 0;
   let sumRate = 0;
   let codeRate2_3 = 0;
-  let codeRate2_4 = 0;
   let codeRate2_5 = 0;
+  let codeRate2_7 = 0;
   let toggleCount = [];
 
   function capture(event){
@@ -143,11 +143,11 @@ function f1(){
         if (i == 2){
           codeRate2_3 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod); 
         }
-        else if (i == 3){
-          codeRate2_4 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod); 
-        }
         else if (i == 4){
           codeRate2_5 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod); 
+        }
+        else if (i == 6){
+          codeRate2_7 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod); 
         }
       }
 
@@ -159,8 +159,8 @@ function f1(){
     let update = "";
     update += `STATE: ${state.toUpperCase()} \n`;
     update += `CODE2-3SEC: <span style="color:lime;">${(codeRate2_3).toFixed(0)}</span> \n`;
-    update += `CODE2-4SEC: <span style="color:lime;">${(codeRate2_4).toFixed(0)}</span> \n`;
     update += `CODE2-5SEC: <span style="color:lime;">${(codeRate2_5).toFixed(0)}</span> \n`;
+    update += `CODE2-7SEC: <span style="color:lime;">${(codeRate2_7).toFixed(0)}</span> \n`;
     update += `CODE_AVG: <span style="color:lime;">${((codeRate2_3+codeRate2_4+codeRate2_5)/3).toFixed(0)}</span> \n`;
     update += `ON: ${onTime} MSEC \n`;
     update += `OFF: ${offTime} MSEC \n`;
