@@ -82,9 +82,9 @@ function f1(){
   let codeRates = [];
   let codeRate = 0;
   let sumRate = 0;
+  let codeRate2_2 = 0;
   let codeRate2_3 = 0;
   let codeRate2_5 = 0;
-  let codeRate2_7 = 0;
   let toggleCount = [];
 
   function capture(event){
@@ -140,14 +140,17 @@ function f1(){
         tmpSumHighCount += toggleCount[toggleCount.length-i].highCount;
         tmpSumLowCount += toggleCount[toggleCount.length-i].lowCount;
         tmpSumPeriod += toggleCount[toggleCount.length-i].period;
-        if (i == 2){
+        if (i == 1){
+          codeRate2_2 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod); 
+          if (tmpSumHighCount+tmpSumLowCount < 4){
+            codeRate2_2 = 60000/(onTime+offTime);
+          }
+        }
+        else if (i == 2){
           codeRate2_3 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod); 
         }
         else if (i == 4){
           codeRate2_5 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod); 
-        }
-        else if (i == 6){
-          codeRate2_7 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod); 
         }
       }
 
@@ -161,7 +164,7 @@ function f1(){
 /*     update += `CODE2-3SEC: <span style="color:lime;">${(codeRate2_3).toFixed(0)}</span> \n`;
     update += `CODE2-5SEC: <span style="color:lime;">${(codeRate2_5).toFixed(0)}</span> \n`;
     update += `CODE2-7SEC: <span style="color:lime;">${(codeRate2_7).toFixed(0)}</span> \n`; */
-    update += `CODE_AVG: <span style="color:lime;">${((codeRate2_3+codeRate2_5)/2).toFixed(0)}</span> \n`;
+    update += `CODE: <span style="color:lime;">${((codeRate2_2)/1).toFixed(0)}</span> \n`;
     update += `ON: ${onTime} MSEC \n`;
     update += `OFF: ${offTime} MSEC \n`;
     document.getElementById("light").innerHTML = update;
