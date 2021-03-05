@@ -141,13 +141,13 @@ function f1(){
         tmpSumLowCount += toggleCount[toggleCount.length-i].lowCount;
         tmpSumPeriod += toggleCount[toggleCount.length-i].period;
         if (i == 1){
-          codeRate2_5 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod); 
+          codeRate2_2 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod); 
         }
         else if (i == 2){
-          codeRate2_10 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod); 
+          codeRate2_3 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod); 
         }
         else if (i == 4){
-          codeRate2_10 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod); 
+          codeRate2_5 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod); 
         }
       }
 
