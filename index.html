@@ -158,10 +158,10 @@ function f1(){
     }
     let update = "";
     update += `STATE: ${state.toUpperCase()} \n`;
-    update += `CODE2-3SEC: <span style="color:lime;">${(codeRate2_3).toFixed(0)}</span> \n`;
+/*     update += `CODE2-3SEC: <span style="color:lime;">${(codeRate2_3).toFixed(0)}</span> \n`;
     update += `CODE2-5SEC: <span style="color:lime;">${(codeRate2_5).toFixed(0)}</span> \n`;
-    update += `CODE2-7SEC: <span style="color:lime;">${(codeRate2_7).toFixed(0)}</span> \n`;
-    update += `CODE_AVG: <span style="color:lime;">${((codeRate2_3+codeRate2_5+codeRate2_7)/3).toFixed(0)}</span> \n`;
+    update += `CODE2-7SEC: <span style="color:lime;">${(codeRate2_7).toFixed(0)}</span> \n`; */
+    update += `CODE_AVG: <span style="color:lime;">${((codeRate2_3+codeRate2_5)/2).toFixed(0)}</span> \n`;
     update += `ON: ${onTime} MSEC \n`;
     update += `OFF: ${offTime} MSEC \n`;
     document.getElementById("light").innerHTML = update;
