@@ -82,8 +82,8 @@ function f1(){
   let codeRates = [];
   let codeRate = 0;
   let sumRate = 0;
-  let codeRate2_2 = 0;
   let codeRate2_3 = 0;
+  let codeRate2_4 = 0;
   let codeRate2_5 = 0;
   let toggleCount = [];
 
@@ -101,6 +101,32 @@ function f1(){
       let a = data.data[i++];
       sum += (r/255*.21+g/255*.72+b/255*.07)*(a/255);
     }
+    let avg = sum / (i / 4);
+    i = 0;
+    sum = 0;
+    while (i < data.data.length){
+      let r = data.data[i];
+      let g = data.data[i+1];
+      let b = data.data[i+2];
+      let a = data.data[i+3];
+      let pixelIntensity = (r/255*.21+g/255*.72+b/255*.07)*(a/255);
+      if ( pixelIntensity > avg ){
+        data.data[i] = 255;
+        data.data[i+1] = 255;
+        data.data[i+2] = 255;
+        data.data[i+3] = 255;
+        sum += 1;
+      }
+      else {
+        data.data[i] = 0;
+        data.data[i+1] = 0;
+        data.data[i+2] = 0;
+        data.data[i+3] = 255;
+        sum += 0;
+      }
+      i+= 4;
+    }
+    context.putImageData(data, 0, 0);
     if (state == "low" && sum > 1.3 * prev){
       high++;
       offTime = ((curTime - prevTime) + offTime) / 2;
@@ -140,19 +166,19 @@ function f1(){
         tmpSumHighCount += toggleCount[toggleCount.length-i].highCount;
         tmpSumLowCount += toggleCount[toggleCount.length-i].lowCount;
         tmpSumPeriod += toggleCount[toggleCount.length-i].period;
-        if (i == 1){
-          if (((tmpSumHighCount+tmpSumLowCount) / 2) >= 4){
-            codeRate2_2 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod);
+        if (i == 2){
+          if (((tmpSumHighCount+tmpSumLowCount) / 2) >= 6){
+            codeRate2_3 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod);
           }   
           else if ( (tmpSumHighCount+tmpSumLowCount) != 0){
-            codeRate2_2 = 60000/(onTime+offTime);
+            codeRate2_3 = 60000/(onTime+offTime);
           }
           else {
-            codeRate2_2 = 0;
+            codeRate2_3 = 0;
           }
         }
-        else if (i == 2){
-          codeRate2_3 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod); 
+        else if (i == 3){
+          codeRate2_4 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod); 
         }
         else if (i == 4){
           codeRate2_5 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod); 
@@ -169,7 +195,7 @@ function f1(){
 /*     update += `CODE2-3SEC: <span style="color:lime;">${(codeRate2_3).toFixed(0)}</span> \n`;
     update += `CODE2-5SEC: <span style="color:lime;">${(codeRate2_5).toFixed(0)}</span> \n`;
     update += `CODE2-7SEC: <span style="color:lime;">${(codeRate2_7).toFixed(0)}</span> \n`; */
-    update += `CODE: <span style="color:lime;">${((codeRate2_2)/1).toFixed(0)}</span> \n`;
+    update += `CODE: <span style="color:lime;">${((codeRate2_3)/1).toFixed(0)}</span> \n`;
     update += `ON: ${onTime.toFixed(1)} MSEC \n`;
     update += `OFF: ${offTime.toFixed(1)} MSEC \n`;
     document.getElementById("light").innerHTML = update;
