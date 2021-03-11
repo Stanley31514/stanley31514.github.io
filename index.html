@@ -41,7 +41,7 @@ function f1(){
 
 
 <video id="player" controls autoplay webkit-playsinline playsinline style="height:300px;width:300px;border: 4px solid gray;"></video>
-<canvas id="canvas" width=10 height=10 style="display: none;"></canvas>
+<canvas id="canvas" width=100 height=100></canvas>
 <pre id="light" style="font-size: 100px;">test</pre>
 <script>
   const player = document.getElementById('player');
@@ -180,7 +180,7 @@ function f1(){
   .then((stream) => {
     // Attach the video stream to the video element and autoplay.
     player.srcObject = stream;
-    setInterval(capture , 1);
+    setInterval(capture , 10);
   });
 
 </script>
