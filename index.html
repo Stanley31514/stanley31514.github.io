@@ -1,17 +1,217 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html>
 <head>
 	<title>
-		S&E LLC
+			Testing
 	</title>
 
-	
-	<meta charset="utf-8"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1">	
 </head>
 
-<body oncontextmenu="return false;">
-    <img src="stanley31514.github.io/Picture3.png" alt="Picture1">
+<body style="color: white; background: rgb(35, 35, 35);">
+<!-- <canvas id="myCanvas" width="200" height="200" style="border:1px solid #000000;">
+</canvas> 
+
+
+Enter a string <input type="text" id="user_input">
+<input type="button" value="Submit" onclick="f1()")>
+
+
+
+
+<script>
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+ctx.fillStyle = "#0000FF";
+ctx.fillRect(0,0,200,100);
+ctx.beginPath();
+ctx.arc(95,50,40,0,2*Math.PI);
+ctx.stroke();
+ctx.font = "30px Comic Sans MS";
+ctx.fillStyle = "red";
+ctx.textAlign = "center";
+ctx.fillText("Hello World", canvas.width/2, canvas.height/2); 
+function f1(){
+	var canvas = document.getElementById("user_input");
+	alert(canvas.value);
+	
+}
+</script> -->
+
+
+
+<video id="player" controls autoplay webkit-playsinline playsinline style="height:300px;width:300px;border: 4px solid gray;"></video>
+<canvas id="canvas" width=100 height=100></canvas>
+<pre id="light" style="font-size: 100px;">test</pre>
+<script>
+  const player = document.getElementById('player');
+  const canvas = document.getElementById('canvas');
+  const context = canvas.getContext('2d');
+
+  const constraints = {
+    video: {
+    width: {
+      min: 100,
+      ideal: 100,
+      max: 100,
+    },
+    height: {
+      min: 100,
+      ideal: 100,
+      max: 100
+    },
+    frameRate: {
+      min: 30,
+      ideal: 120,
+      max: 240
+    },
+    facingMode: {
+      exact: 'environment'
+    }
+  }
+  };  
+  
+  let onTime = 0;
+  let offTime = 0;
+  let high = 0;
+  let low = 0;
+  let prev = 0;
+  let state = "low";
+  let prevTime = new Date();
+  let prevSaveTime = prevTime;
+  let codeRates = [];
+  let codeRate = 0;
+  let sumRate = 0;
+  let codeRate2_3 = 0;
+  let codeRate2_4 = 0;
+  let codeRate2_5 = 0;
+  let toggleCount = [];
+
+  function capture(event){
+ 
+    context.drawImage(player , 0, 0, canvas.width, canvas.height);
+    let curTime = new Date();
+    let data = context.getImageData(0, 0, canvas.width, canvas.height);
+    let i = 0;
+    let sum = 0;
+    while (i < data.data.length){
+      let r = data.data[i++];
+      let g = data.data[i++];
+      let b = data.data[i++];
+      let a = data.data[i++];
+      sum += (r/255*.21+g/255*.72+b/255*.07)*(a/255);
+    }
+    /* let avg = sum / (i / 4);
+    i = 0;
+    sum = 0;
+    while (i < data.data.length){
+      let r = data.data[i];
+      let g = data.data[i+1];
+      let b = data.data[i+2];
+      let a = data.data[i+3];
+      let pixelIntensity = (r/255*.21+g/255*.72+b/255*.07)*(a/255);
+      if ( pixelIntensity > avg ){
+        data.data[i] = 255;
+        data.data[i+1] = 255;
+        data.data[i+2] = 255;
+        data.data[i+3] = 255;
+        sum += 1;
+      }
+      else {
+        data.data[i] = 0;
+        data.data[i+1] = 0;
+        data.data[i+2] = 0;
+        data.data[i+3] = 255;
+        sum += 0;
+      }
+      i+= 4;
+    }
+    context.putImageData(data, 0, 0); */
+    if (state == "low" && sum > 1.3 * prev){
+      high++;
+      offTime = ((curTime - prevTime) + offTime) / 2;
+      state = "high";
+      prevTime = curTime;
+    }
+    else if (state == "high" && sum < 0.7 * prev){
+      low++;
+      onTime = ((curTime - prevTime) + onTime) / 2;
+      state = "low";
+      prevTime = curTime;
+    }
+
+    let newRate = 60000/(onTime+offTime);
+    codeRates.push(newRate);
+    if (isFinite(newRate)){
+      sumRate += newRate;
+    }
+    
+    if (codeRates.length > 2000){
+      if (isFinite(codeRates[0])){
+        sumRate -= codeRates[0];
+      }
+      codeRates.shift(1);
+    }
+    codeRate = sumRate/codeRates.length;
+
+    if ((curTime - prevSaveTime) > 1000){
+      toggleCount.push({highCount:high , lowCount:low , period:curTime-prevSaveTime});
+      if (toggleCount.length > 10){
+        toggleCount.shift();
+      }
+      let tmpSumHighCount = 0;
+      let tmpSumLowCount = 0;
+      let tmpSumPeriod = 0;
+      for (let i = 1 ; i <= toggleCount.length ; i++){
+        tmpSumHighCount += toggleCount[toggleCount.length-i].highCount;
+        tmpSumLowCount += toggleCount[toggleCount.length-i].lowCount;
+        tmpSumPeriod += toggleCount[toggleCount.length-i].period;
+        if (i == 2){
+          if (((tmpSumHighCount+tmpSumLowCount) / 2) >= 6){
+            codeRate2_3 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod);
+          }   
+          else if ( (tmpSumHighCount+tmpSumLowCount) != 0){
+            codeRate2_3 = 60000/(onTime+offTime);
+          }
+          else {
+            codeRate2_3 = 0;
+          }
+        }
+        else if (i == 3){
+          codeRate2_4 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod); 
+        }
+        else if (i == 4){
+          codeRate2_5 = ((tmpSumHighCount+tmpSumLowCount) / 2) * (60000/tmpSumPeriod); 
+        }
+      }
+
+      prevSaveTime = curTime;
+
+      high = 0;
+      low = 0;
+    }
+    let update = "";
+    update += `STATE: ${state.toUpperCase()} \n`;
+/*     update += `CODE2-3SEC: <span style="color:lime;">${(codeRate2_3).toFixed(0)}</span> \n`;
+    update += `CODE2-5SEC: <span style="color:lime;">${(codeRate2_5).toFixed(0)}</span> \n`;
+    update += `CODE2-7SEC: <span style="color:lime;">${(codeRate2_7).toFixed(0)}</span> \n`; */
+    update += `CODE: <span style="color:lime;">${((codeRate2_3)/1).toFixed(0)}</span> \n`;
+    update += `ON: ${onTime.toFixed(1)} MSEC \n`;
+    update += `OFF: ${offTime.toFixed(1)} MSEC \n`;
+    document.getElementById("light").innerHTML = update;
+    prev = sum;
+  }
+
+  navigator.mediaDevices.getUserMedia(constraints)
+  .then((stream) => {
+    // Attach the video stream to the video element and autoplay.
+    player.srcObject = stream;
+    setInterval(capture , 10);
+  });
+
+</script>
 
 </body>
+
+
 </html>
